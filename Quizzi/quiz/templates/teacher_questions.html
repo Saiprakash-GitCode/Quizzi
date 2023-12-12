@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz App</title>
+    <style>
+        /* Center the classinfo div horizontally and vertically */
+        #classinfo {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 0%;
+            left: 40%;
+            height: 70vh;
+            width: 85vh; /* Set the height to the viewport height for vertical centering */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content-section" id="classinfo">
+        <h1 style="text-align: center;">Quiz: {{ quiz.title }}</h1>
+        <p>Timer: <span id="timer">{{ quiz.timer }}</span> seconds</p>
+
+        <b><h1 style="text-align: center;">Question {{ session['current_question'] + 1 }} of {{ quiz.questions|length }}</h1>
+            <h1 style="text-align: center;"> QUESTION {{ session['current_question'] + 1 }} </h1>
+
+        </b>
+        <a href="{{ url_for('quiz_details', quiz_id=quiz.id) }}" class="btn btn-primary">Quiz Details</a>
+
+
+        <form method="POST" id="quiz-form">
+
+        </form>
+    </div>
+    {% block javascript %}
+<script>
+    // Countdown timer
+    let timeLeft = JSON.parse('{{ timer }}');
+    const timerElement = document.getElementById("timer");
+    const quizForm = document.getElementById("quiz-form");
+
+    function updateTimer() {
+        timerElement.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            // Time's up, automatically submit the form
+            quizForm.submit();
+        } else {
+            // Decrement the timer and update every second
+            timeLeft--;
+            setTimeout(updateTimer, 1000);
+        }
+    }
+
+    // Start the timer when the page loads
+    updateTimer();
+</script>
+{% endblock %}
+</body>
+</html>
+
+{% endblock content %}

@@ -1,0 +1,156 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<style>
+   .joinquizbtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 10px;
+    color: white;
+    text-shadow: 2px 2px rgb(116, 116, 116);
+    text-transform: uppercase;
+    border: solid 2px black;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 17px;
+    background-color: hsl(49deg 98% 60%);
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+    transition: all .5s ease;
+  }
+  
+  .joinquizbtn:active {
+    transform: scale(.9);
+    transition: all 100ms ease;
+  }
+  
+  .joinquizbtn svg {
+    transition: all .5s ease;
+    z-index: 2;
+  }
+  
+  .play {
+    transition: all .5s ease;
+    transition-delay: 300ms;
+  }
+  
+  .joinquizbtn:hover svg {
+    transform: scale(3) translate(50%);
+  }
+  
+  .now {
+    position: absolute;
+    left: 0;
+    transform: translateX(-100%);
+    transition: all .5s ease;
+    z-index: 2;
+  }
+  
+  .joinquizbtn:hover .now {
+    transform: translateX(10px);
+    transition-delay: 300ms;
+  }
+  
+  .joinquizbtn:hover .play {
+    transform: translateX(200%);
+    transition-delay: 300ms;
+  }</style>
+  <body>  
+
+    <div class="home"> 
+
+      <div class="row">
+     
+        {% for classs in created_classes %}
+        
+        <div class="col-md-5">
+                <div class="class-card">
+                    <div class="card">
+                          <div class="card-body">
+                              <div class="card-title"> 
+                                  <h4 style="display: inline-block;">
+                                   
+                                      <a href="{{ url_for('class_info', classid=classs.id) }}" style="color: black;">{{ classs.class_name }}</a>
+                                  </h4>
+                                  
+                               
+                                  <button class="dot-button" onclick="toggleDropdown()"> &#8942;</button>
+                              </div>
+                              <div class="classdd">
+                                  <div class="classdd-content" id="myDropdown">
+                                      <a class="dropdown-item" href="{{ url_for('class_info', classid=classs.id) }}">View Details</a>
+                                      <a class="dropdown-item delete-class" data-classid="{{ classs.id }}" href="#">Delete {{ classs.class_name}}</a>
+                                  </div>
+                             
+                              </div><div >
+                                <u>   {{ classs.username }}</u>
+                              </div>
+                          </div>
+                      
+                      </div>
+                  </div>
+        </div>
+          {% endfor %}
+      
+      
+            
+        
+          {% for classs in joined_classes %}
+          <div class="col-md-5">
+            <div class="class-card">
+                <div class="card">
+                      <div class="card-body">
+                          <div class="card-title"> 
+                              <h4 style="display: inline-block;">
+                                  <a href="{{ url_for('class_info', classid=classs.id) }}" style="color: black;">{{ classs.class_name }}</a>
+                              </h4>
+                              
+                              <!-- Add the three-dot button here -->
+                              <button class="dot-button" onclick="toggleDropdown()"> &#8942;</button>
+                          </div>
+                          <div class="classdd">
+                              <div class="classdd-content" id="myDropdown">
+                                  <a class="dropdown-item" href="{{ url_for('class_info', classid=classs.id) }}">View Details</a>
+                                  
+                              </div>
+                          </div><div >
+                            <u>   {{ classs.username }}</u>
+                          </div>
+                      </div>
+                      
+                  </div>
+              </div>
+          </div>
+      {% endfor %}
+        <!-- ... (existing code for classes) ... -->
+    </div>
+
+</div>
+</div>
+
+</body>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+<script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='sockets.js') }}"></script>
+<!-- <script> const socket = io({autoconnect: false}); 
+
+  document.addEventListener('DOMContentLoaded', function() {
+    socket.connect(); 
+  });
+  socket.on('user', function(data){ 
+    console.log("User connected:"+data['username'])
+  })
+  btn = document.getElementById('joinquizbtn');
+    btn.addEventListener('click' , function()  { 
+      quiz_code = document.getElementById('quiz_code').value; 
+    socket.emit('user_join')
+  }); -->
+<!--   
+  </script> -->
+
+{% endblock %}
